@@ -1,33 +1,18 @@
 import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import Header from "@/components/Header";
 
 export default function TabLayout() {
+  const backgroundColor = useThemeColor({}, "background");
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#CD853F",
-        header: (props) => {
-          const { top } = useSafeAreaInsets();
-          return (
-            <ThemedView>
-              <ThemedText
-                type="title"
-                style={{
-                  marginTop: top,
-                  padding: 16,
-                  fontFamily: "Poppins",
-                  color: "#CD853F",
-                }}
-              >
-                {props.options.title}
-              </ThemedText>
-            </ThemedView>
-          );
-        },
+        tabBarStyle: { backgroundColor },
+        header: Header,
       }}
+      backBehavior="none"
     >
       <Tabs.Screen
         name="index"
