@@ -1,5 +1,4 @@
 import { StyleSheet, View } from "react-native";
-import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 
 export default function FinanceCategories({
@@ -10,7 +9,7 @@ export default function FinanceCategories({
   return (
     <View>
       {categories?.map((category) => (
-        <ThemedText type="sm" style={styles.text}>
+        <ThemedText type="sm" style={styles.text} key={category}>
           {category}
         </ThemedText>
       ))}
