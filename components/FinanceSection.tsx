@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 import FinanceCategories from "./FinanceCategories";
@@ -7,21 +7,25 @@ export default function FinanceSection({
   title,
   total,
   categories,
+  onPress,
 }: {
   title: string;
   total: string;
   categories: string[];
+  onPress: () => void;
 }) {
   return (
-    <ThemedView style={styles.section}>
-      <ThemedText type="defaultSemiBold" style={styles.title}>
-        {title}
-      </ThemedText>
-      <View style={styles.details}>
-        <FinanceCategories categories={categories} />
-        <ThemedText type="xl">{total}</ThemedText>
-      </View>
-    </ThemedView>
+    <Pressable onPress={onPress} key={title}>
+      <ThemedView style={styles.section}>
+        <ThemedText type="defaultSemiBold" style={styles.title}>
+          {title}
+        </ThemedText>
+        <View style={styles.details}>
+          <FinanceCategories categories={categories} />
+          <ThemedText type="xl">{total}</ThemedText>
+        </View>
+      </ThemedView>
+    </Pressable>
   );
 }
 
