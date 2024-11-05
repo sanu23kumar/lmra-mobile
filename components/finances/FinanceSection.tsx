@@ -1,7 +1,8 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import { ThemedView } from "./ThemedView";
-import { ThemedText } from "./ThemedText";
+import { ThemedView } from "../ThemedView";
+import { ThemedText } from "../ThemedText";
 import FinanceCategories from "./FinanceCategories";
+import { formatCurrency } from "@/utils/formatCurrency";
 
 export default function FinanceSection({
   title,
@@ -17,12 +18,12 @@ export default function FinanceSection({
   return (
     <Pressable onPress={onPress} key={title}>
       <ThemedView style={styles.section}>
-        <ThemedText type="defaultSemiBold" style={styles.title}>
+        <ThemedText type="defaultSemiBold" colorScheme="primary">
           {title}
         </ThemedText>
         <View style={styles.details}>
           <FinanceCategories categories={categories} />
-          <ThemedText type="xl">{total}</ThemedText>
+          <ThemedText type="xl">{formatCurrency(total)}</ThemedText>
         </View>
       </ThemedView>
     </Pressable>
@@ -41,8 +42,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 8,
-  },
-  title: {
-    color: "#CD853F",
   },
 });
