@@ -1,8 +1,8 @@
-import FinanceCategories from "@/components/FinanceCategories";
-import FinanceSection from "@/components/FinanceSection";
+import FinanceCategories from "@/components/finances/FinanceCategories";
+import FinanceSection from "@/components/finances/FinanceSection";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useExpenses } from "@/database/tables/expenses/useExpenses";
+import { useExpenses } from "@/database/tables/expenses/expenses.hooks";
 import { router } from "expo-router";
 import { StyleSheet, ScrollView, Pressable, View } from "react-native";
 
@@ -12,23 +12,26 @@ export default function FinancesScreen() {
     "Eating Out 30,000",
     "Groceries 10,000",
     "Home 8,000",
-  ];
-  const savingsCategories = ["Salary 30,000", "Freelance 10,000"];
-  const emisCategories = [
     "Eating Out 30,000",
     "Groceries 10,000",
     "Home 8,000",
   ];
-  const incomeCategories = [
-    "Eating Out 30,000",
-    "Groceries 10,000",
-    "Home 8,000",
-  ];
-  const creditCardPaymentsCategories = [
-    "Eating Out 30,000",
-    "Groceries 10,000",
-    "Home 8,000",
-  ];
+  // const savingsCategories = ["Salary 30,000", "Freelance 10,000"];
+  // const emisCategories = [
+  //   "Eating Out 30,000",
+  //   "Groceries 10,000",
+  //   "Home 8,000",
+  // ];
+  // const incomeCategories = [
+  //   "Eating Out 30,000",
+  //   "Groceries 10,000",
+  //   "Home 8,000",
+  // ];
+  // const creditCardPaymentsCategories = [
+  //   "Eating Out 30,000",
+  //   "Groceries 10,000",
+  //   "Home 8,000",
+  // ];
   return (
     <ThemedView style={styles.container}>
       <ScrollView
@@ -43,40 +46,40 @@ export default function FinancesScreen() {
           categories={expenseCategories}
           onPress={() => router.navigate("/expenses")}
         />
-        <FinanceSection
+        {/* <FinanceSection
           title={"Savings"}
           total="80,000"
           categories={savingsCategories}
-          onPress={() => router.navigate("/add_expense")}
+          onPress={() => router.navigate("/expenses")}
         />
         <FinanceSection
           title={"EMIs"}
           total="32,000"
           categories={emisCategories}
-          onPress={() => router.navigate("/add_expense")}
+          onPress={() => router.navigate("/expenses")}
         />
         <FinanceSection
           title={"Income"}
           total="2,00,000"
           categories={incomeCategories}
-          onPress={() => router.navigate("/add_expense")}
+          onPress={() => router.navigate("/expenses")}
         />
         <FinanceSection
           title={"Credit Card Payments"}
           total="1,00,000"
           categories={creditCardPaymentsCategories}
-          onPress={() => router.navigate("/add_expense")}
-        />
+          onPress={() => router.navigate("/expenses")}
+        /> */}
       </ScrollView>
       <View style={styles.monthContainer}>
         <Pressable style={styles.monthButton}>
-          <ThemedText style={styles.text}>September</ThemedText>
+          <ThemedText colorScheme="primary">September</ThemedText>
         </Pressable>
-        <ThemedText type="subtitle" style={styles.text}>
+        <ThemedText type="subtitle" colorScheme="primary">
           October
         </ThemedText>
         <Pressable style={styles.monthButton}>
-          <ThemedText style={styles.text}>November</ThemedText>
+          <ThemedText colorScheme="primary">November</ThemedText>
         </Pressable>
       </View>
     </ThemedView>
@@ -102,11 +105,5 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     gap: 16,
-  },
-  text: {
-    padding: 16,
-    color: "#CD853F",
-    flex: 1,
-    textAlign: "center",
   },
 });
