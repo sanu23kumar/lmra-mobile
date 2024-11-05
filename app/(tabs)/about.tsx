@@ -1,10 +1,11 @@
+import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Text, StyleSheet } from "react-native";
 
 export default function AboutScreen() {
   return (
     <ThemedView style={styles.container}>
-      <Text style={styles.text}>About screen</Text>
+      <ThemedText colorScheme="primary">About screen</ThemedText>
     </ThemedView>
   );
 }
@@ -14,8 +15,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  text: {
-    color: "#CD853F",
   },
 });
