@@ -1,8 +1,8 @@
-import AddExpense from "@/components/AddExpense";
+import AddExpense from "@/components/expenses/AddExpense";
 import { ThemedView } from "@/components/ThemedView";
-import UserExpense from "@/components/UserExpense";
+import UserExpense from "@/components/expenses/UserExpense";
 import { Expense } from "@/database/tables/expenses/expenses.types";
-import { useExpenses } from "@/database/tables/expenses/useExpenses";
+import { useExpenses } from "@/database/tables/expenses/expenses.hooks";
 import { FlatList } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
