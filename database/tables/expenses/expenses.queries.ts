@@ -8,15 +8,19 @@ export function useExpenseQueries() {
   const addExpense = async (
     name: string,
     amount: number,
-    date_of_expense: Date
+    date_of_expense: Date,
+    payment_method_id: number, // New parameter
+    expense_category_id: number // New parameter
   ) => {
     const start = performance.now();
     await db.runAsync(
-      "INSERT INTO expenses (name, amount, date_of_expense, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO expenses (name, amount, date_of_expense, payment_method_id, expense_category_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [
         name,
         amount,
         date_of_expense.toISOString(),
+        payment_method_id,
+        expense_category_id,
         new Date().toISOString(),
         new Date().toISOString(),
       ]

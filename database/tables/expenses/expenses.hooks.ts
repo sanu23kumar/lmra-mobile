@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from "react";
 import { create } from "zustand";
 import { Expense } from "./expenses.types";
-import { useExpenseQueries } from "./useExpenseQueries";
+import { useExpenseQueries } from "./expenses.queries";
 
 // Define the Zustand store within the hook
 interface ExpensesStore {
@@ -55,14 +55,19 @@ export function useExpenses() {
   const handleAddExpense = async (
     name: string,
     amount: number,
-    date_of_expense: Date
+    date_of_expense: Date,
+    payment_method_id: number,
+    expense_category_id: number
   ) => {
     try {
-      const start = performance.now();
-      await addExpense(name, amount, date_of_expense);
-      await fetchExpenses(); // Refresh expenses after adding
-      const end = performance.now();
-      console.log("Time taken to add the expense", end - start);
+      await addExpense(
+        name,
+        amount,
+        date_of_expense,
+        payment_method_id,
+        expense_category_id
+      );
+      await fetchExpenses();
     } catch (err) {
       setError("Failed to add expense");
       console.error(err);
