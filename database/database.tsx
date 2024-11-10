@@ -1,6 +1,6 @@
 import React from "react";
 import { SQLiteProvider } from "expo-sqlite";
-import { migrateDbIfNeeded } from "./migrations";
+import { migrateDbIfNeeded } from "./database.migrations";
 
 interface DatabaseProviderProps {
   children: React.ReactNode;

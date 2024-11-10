@@ -1,108 +1,44 @@
-import { useEffect, useCallback } from "react";
-import { create } from "zustand";
-import { Expense } from "./expenses.types";
+import { useEffect } from "react";
 import { useExpenseQueries } from "./expenses.queries";
+import { useExpensesStore } from "./expenses.store";
 
-// Define the Zustand store within the hook
-interface ExpensesStore {
-  expenses: Expense[];
-  loading: boolean;
-  error: string | null;
-  setLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
-  setExpenses: (expenses: Expense[]) => void;
-}
-
-const useExpensesStore = create<ExpensesStore>((set) => ({
-  expenses: [],
-  loading: true,
-  error: null,
-  setLoading: (loading) => set({ loading }),
-  setError: (error) => set({ error }),
-  setExpenses: (expenses) => set({ expenses }),
-}));
-
-// Main useExpense hook
 export function useExpenses() {
   const { addExpense, getAllExpenses, updateExpense, deleteExpense } =
     useExpenseQueries();
 
-  // Zustand state and setters
-  const { expenses, loading, error, setLoading, setError, setExpenses } =
-    useExpensesStore();
+  const { expenses, setExpenses } = useExpensesStore();
 
   const totalExpense = expenses.reduce(
     (sum, expense) => sum + expense.amount,
     0
   );
 
-  // Fetch all expenses and set the state
-  const fetchExpenses = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getAllExpenses();
-      setExpenses(data);
-    } catch (err) {
-      setError("Failed to fetch expenses");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [getAllExpenses, setLoading, setError, setExpenses]);
+  const fetchExpenses = () =>
+    getAllExpenses().then((data) => setExpenses(data));
 
-  // Add a new expense and refresh the list
   const handleAddExpense = async (
     name: string,
     amount: number,
     date_of_expense: Date,
     payment_method_id: number,
     expense_category_id: number
-  ) => {
-    try {
-      await addExpense(
-        name,
-        amount,
-        date_of_expense,
-        payment_method_id,
-        expense_category_id
-      );
-      await fetchExpenses();
-    } catch (err) {
-      setError("Failed to add expense");
-      console.error(err);
-    }
-  };
+  ) =>
+    addExpense(
+      name,
+      amount,
+      date_of_expense,
+      payment_method_id,
+      expense_category_id
+    ).then(fetchExpenses);
 
-  // Update an expense by ID and refresh the list
   const handleUpdateExpense = async (
     id: number,
     name: string,
     amount: number
-  ) => {
-    try {
-      await updateExpense(id, name, amount);
-      await fetchExpenses(); // Refresh expenses after updating
-    } catch (err) {
-      setError("Failed to update expense");
-      console.error(err);
-    }
-  };
+  ) => updateExpense(id, name, amount).then(fetchExpenses);
 
-  // Delete an expense by ID and refresh the list
-  const handleDeleteExpense = async (id: number) => {
-    try {
-      const start = performance.now();
-
-      await deleteExpense(id);
-      await fetchExpenses(); // Refresh expenses after deletion
-      const end = performance.now();
-      console.log("Time taken to add the expense", end - start);
-    } catch (err) {
-      setError("Failed to delete expense");
-      console.error(err);
-    }
-  };
+  const handleDeleteExpense = async (id: number) =>
+    deleteExpense(id).then(fetchExpenses);
 
   // Load expenses on mount
   useEffect(() => {
@@ -111,12 +47,10 @@ export function useExpenses() {
 
   return {
     expenses,
-    loading,
-    error,
+    totalExpense,
     fetchExpenses,
     handleAddExpense,
     handleUpdateExpense,
     handleDeleteExpense,
-    totalExpense,
   };
 }

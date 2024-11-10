@@ -1,5 +1,7 @@
 import { SQLiteDatabase } from "expo-sqlite";
 import { migrateExpensesTable } from "./tables/expenses/expenses.migrations";
+import { migrateExpenseCategoriesTable } from "./tables/expenseCategories/expenseCategories.migrations";
+import { migratePaymentMethodsTable } from "./tables/paymentMethods/paymentMethods.migrations";
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   const DATABASE_VERSION = 1;
@@ -14,6 +16,8 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   if (currentDbVersion === 0) {
     // Initial migration for all tables
     await migrateExpensesTable(db);
+    await migrateExpenseCategoriesTable(db);
+    await migratePaymentMethodsTable(db);
     await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
   }
 }

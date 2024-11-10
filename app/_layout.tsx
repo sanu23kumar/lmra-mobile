@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import { DatabaseProvider } from "@/database";
+import { DatabaseProvider } from "@/database/database";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
