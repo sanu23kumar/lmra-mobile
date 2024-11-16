@@ -9,6 +9,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      initialRouteName="finances"
       screenOptions={{
         tabBarActiveTintColor,
         tabBarStyle: { backgroundColor },
