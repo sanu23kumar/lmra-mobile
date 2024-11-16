@@ -8,17 +8,18 @@ import { formatDateTime } from "@/utils/formatDateTime";
 import DatePicker from "react-native-date-picker";
 import { usePaymentMethods } from "@/database/tables/paymentMethods/paymentMethods.hooks";
 import { useExpenseCategories } from "@/database/tables/expenseCategories/expenseCategories.hooks";
+import { useNavigation, useRouter } from "expo-router";
 
 export default function AddExpense() {
+  const { navigate } = useRouter();
+
   const { handleAddExpense } = useExpenses();
-  const { paymentMethods } = usePaymentMethods();
-  const { expenseCategories } = useExpenseCategories();
+  const { selectedMethod } = usePaymentMethods();
+  const { selectedCategory } = useExpenseCategories();
 
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(new Date());
-  const [category, setCategory] = useState("");
-  const [method, setMethod] = useState("");
   const [open, setOpen] = useState(false);
 
   const placeholderName =
@@ -58,13 +59,15 @@ export default function AddExpense() {
       <View style={styles.inputRow}>
         <ThemedTextInput
           placeholder="Method"
-          value={method}
-          onChangeText={setMethod}
+          onPress={() => navigate("/payment_methods")}
+          value={selectedMethod?.method_name}
+          editable={false}
         />
         <ThemedTextInput
           placeholder="Category"
-          value={category}
-          onChangeText={setCategory}
+          onPress={() => navigate("/expense_categories")}
+          value={selectedCategory?.category_name}
+          editable={false}
         />
       </View>
 
