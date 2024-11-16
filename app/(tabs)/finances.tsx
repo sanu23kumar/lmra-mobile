@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   monthContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    padding: 16,
   },
   section: {
     flexDirection: "column",
