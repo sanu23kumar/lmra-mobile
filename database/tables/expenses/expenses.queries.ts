@@ -1,5 +1,6 @@
 import { useSQLiteContext } from "expo-sqlite";
 import { Expense } from "./expenses.types";
+import { ExpenseCategoryTotals } from "../expenseCategories/expenseCategories.types";
 
 export function useExpenseQueries() {
   const db = useSQLiteContext();
@@ -47,10 +48,33 @@ export function useExpenseQueries() {
     await db.runAsync("DELETE FROM expenses WHERE id = ?", [id]);
   };
 
+  const getCategoryExpenseTotals = async (): Promise<
+    ExpenseCategoryTotals[]
+  > => {
+    return await db.getAllAsync<{
+      category_id: number;
+      category_name: string;
+      total: number;
+    }>(
+      `
+      SELECT 
+        c.id AS category_id, 
+        c.category_name, 
+        COALESCE(SUM(e.amount), 0) AS total
+      FROM expense_categories c
+      LEFT JOIN expenses e ON c.id = e.expense_category_id
+      GROUP BY c.id, c.category_name
+      ORDER BY total DESC
+      LIMIT 3
+      `
+    );
+  };
+
   return {
     addExpense,
     getAllExpenses,
     updateExpense,
     deleteExpense,
+    getCategoryExpenseTotals,
   };
 }

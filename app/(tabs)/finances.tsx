@@ -1,4 +1,3 @@
-import FinanceCategories from "@/components/finances/FinanceCategories";
 import FinanceSection from "@/components/finances/FinanceSection";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -7,15 +6,8 @@ import { router } from "expo-router";
 import { StyleSheet, ScrollView, Pressable, View } from "react-native";
 
 export default function FinancesScreen() {
-  const { totalExpense } = useExpenses();
-  const expenseCategories = [
-    "Eating Out 30,000",
-    "Groceries 10,000",
-    "Home 8,000",
-    "Eating Out 30,000",
-    "Groceries 10,000",
-    "Home 8,000",
-  ];
+  const { totalExpense, expenseCategoryTotals } = useExpenses();
+
   // const savingsCategories = ["Salary 30,000", "Freelance 10,000"];
   // const emisCategories = [
   //   "Eating Out 30,000",
@@ -43,7 +35,9 @@ export default function FinancesScreen() {
         <FinanceSection
           title={"Expenses"}
           total={totalExpense.toString()}
-          categories={expenseCategories}
+          categories={expenseCategoryTotals.map(
+            (category) => category.category_name + " " + category.total
+          )}
           onPress={() => router.navigate("/expenses")}
         />
         {/* <FinanceSection

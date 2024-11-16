@@ -10,7 +10,7 @@ export const DatabaseProvider: React.FC<DatabaseProviderProps> = ({
   children,
 }) => {
   return (
-    <SQLiteProvider databaseName="myDatabase2.db" onInit={migrateDbIfNeeded}>
+    <SQLiteProvider databaseName="myDatabase4.db" onInit={migrateDbIfNeeded}>
       {children}
     </SQLiteProvider>
   );

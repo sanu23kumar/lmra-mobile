@@ -27,7 +27,13 @@ export default function AddExpense() {
 
   const addExpense = async () => {
     const expenseName = name.trim().length > 0 ? name : placeholderName;
-    await handleAddExpense(expenseName, Number(amount), new Date());
+    await handleAddExpense(
+      expenseName,
+      Number(amount),
+      new Date(),
+      selectedMethod.id,
+      selectedCategory.id
+    );
     setName("");
     setAmount("");
   };

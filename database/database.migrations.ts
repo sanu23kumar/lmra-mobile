@@ -1,3 +1,4 @@
+import FileSystem from "expo-file-system";
 import { SQLiteDatabase } from "expo-sqlite";
 import { migrateExpensesTable } from "./tables/expenses/expenses.migrations";
 import { migrateExpenseCategoriesTable } from "./tables/expenseCategories/expenseCategories.migrations";

@@ -3,18 +3,34 @@ import { useExpenseQueries } from "./expenses.queries";
 import { useExpensesStore } from "./expenses.store";
 
 export function useExpenses() {
-  const { addExpense, getAllExpenses, updateExpense, deleteExpense } =
-    useExpenseQueries();
+  const {
+    addExpense,
+    getAllExpenses,
+    updateExpense,
+    deleteExpense,
+    getCategoryExpenseTotals,
+  } = useExpenseQueries();
 
-  const { expenses, setExpenses } = useExpensesStore();
+  const {
+    expenses,
+    setExpenses,
+    expenseCategoryTotals,
+    setExpenseCategoryTotals,
+  } = useExpensesStore();
 
   const totalExpense = expenses.reduce(
     (sum, expense) => sum + expense.amount,
     0
   );
 
-  const fetchExpenses = () =>
-    getAllExpenses().then((data) => setExpenses(data));
+  const fetchData = async () => {
+    const [expenses, categoryTotals] = await Promise.all([
+      getAllExpenses(),
+      getCategoryExpenseTotals(),
+    ]);
+    setExpenses(expenses);
+    setExpenseCategoryTotals(categoryTotals);
+  };
 
   const handleAddExpense = async (
     name: string,
@@ -29,28 +45,29 @@ export function useExpenses() {
       date_of_expense,
       payment_method_id,
       expense_category_id
-    ).then(fetchExpenses);
+    ).then(fetchData);
 
   const handleUpdateExpense = async (
     id: number,
     name: string,
     amount: number
-  ) => updateExpense(id, name, amount).then(fetchExpenses);
+  ) => updateExpense(id, name, amount).then(fetchData);
 
   const handleDeleteExpense = async (id: number) =>
-    deleteExpense(id).then(fetchExpenses);
+    deleteExpense(id).then(fetchData);
 
   // Load expenses on mount
   useEffect(() => {
-    fetchExpenses();
+    fetchData();
   }, []);
 
   return {
     expenses,
     totalExpense,
-    fetchExpenses,
+    expenseCategoryTotals,
     handleAddExpense,
     handleUpdateExpense,
     handleDeleteExpense,
+    getCategoryExpenseTotals,
   };
 }
