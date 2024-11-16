@@ -9,4 +9,7 @@ export async function migrateExpenseCategoriesTable(db: SQLiteDatabase) {
       updated_at DATETIME NOT NULL
     );
   `);
+  await db.execAsync(`
+    CREATE INDEX IF NOT EXISTS idx_category_name ON expense_categories (category_name);
+  `);
 }

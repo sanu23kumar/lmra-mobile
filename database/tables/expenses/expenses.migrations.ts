@@ -15,4 +15,15 @@ export async function migrateExpensesTable(db: SQLiteDatabase) {
       FOREIGN KEY (expense_category_id) REFERENCES expense_categories (id)
     );
   `);
+  await db.execAsync(`
+    CREATE INDEX IF NOT EXISTS idx_expense_category_id ON expenses (expense_category_id);
+  `);
+
+  await db.execAsync(`
+    CREATE INDEX IF NOT EXISTS idx_payment_method_id ON expenses (payment_method_id);
+  `);
+
+  await db.execAsync(`
+    CREATE INDEX IF NOT EXISTS idx_date_of_expense ON expenses (date_of_expense);
+  `);
 }

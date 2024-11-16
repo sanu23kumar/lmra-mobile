@@ -9,4 +9,7 @@ export async function migratePaymentMethodsTable(db: SQLiteDatabase) {
       updated_at DATETIME NOT NULL
     );
   `);
+  await db.execAsync(`
+    CREATE INDEX IF NOT EXISTS idx_method_name ON payment_methods (method_name);
+  `);
 }
