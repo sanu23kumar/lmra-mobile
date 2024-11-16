@@ -65,7 +65,6 @@ export function useExpenseQueries() {
       LEFT JOIN expenses e ON c.id = e.expense_category_id
       GROUP BY c.id, c.category_name
       ORDER BY total DESC
-      LIMIT 3
       `
     );
   };

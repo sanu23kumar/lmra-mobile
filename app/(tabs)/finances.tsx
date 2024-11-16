@@ -34,10 +34,8 @@ export default function FinancesScreen() {
         {/* Expenses section */}
         <FinanceSection
           title={"Expenses"}
-          total={totalExpense.toString()}
-          categories={expenseCategoryTotals.map(
-            (category) => category.category_name + " " + category.total
-          )}
+          total={totalExpense}
+          categories={expenseCategoryTotals}
           onPress={() => router.navigate("/expenses")}
         />
         {/* <FinanceSection

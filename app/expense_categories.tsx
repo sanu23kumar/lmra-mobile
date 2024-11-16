@@ -17,7 +17,9 @@ export default function PaymentMethods() {
   } = useExpenseCategories();
   const [expenseCategory, setExpenseCategory] = useState("");
 
-  const onAddMethod = () => handleAddExpenseCategory(expenseCategory);
+  const onAddMethod = () => {
+    handleAddExpenseCategory(expenseCategory);
+  };
 
   return (
     <ScreenView>

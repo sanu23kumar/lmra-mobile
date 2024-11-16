@@ -3,6 +3,7 @@ import { ThemedView } from "../ThemedView";
 import { ThemedText } from "../ThemedText";
 import FinanceCategories from "./FinanceCategories";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { ExpenseCategoryTotals } from "@/database/tables/expenseCategories/expenseCategories.types";
 
 export default function FinanceSection({
   title,
@@ -11,8 +12,8 @@ export default function FinanceSection({
   onPress,
 }: {
   title: string;
-  total: string;
-  categories: string[];
+  total: number;
+  categories: ExpenseCategoryTotals[];
   onPress: () => void;
 }) {
   return (
@@ -22,7 +23,7 @@ export default function FinanceSection({
           {title}
         </ThemedText>
         <View style={styles.details}>
-          <FinanceCategories categories={categories} />
+          <FinanceCategories categories={categories} total={total} />
           <ThemedText type="xl">{formatCurrency(total)}</ThemedText>
         </View>
       </ThemedView>

@@ -14,7 +14,7 @@ export default function UserExpense({ item }: { item: Expense }) {
     <Pressable onLongPress={deleteExpense} style={styles.button}>
       <View>
         <ThemedText type="sm" colorScheme="textLight">
-          {formatDateTime(item.date_of_expense)}
+          {formatDateTime(item.date_of_expense)} {item.expense_category_id}
         </ThemedText>
         <ThemedText>{item.name}</ThemedText>
       </View>

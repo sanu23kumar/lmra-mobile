@@ -6,7 +6,7 @@ interface ExpenseCategoriesStore {
   expenseCategories: ExpenseCategory[];
   setExpenseCategories: (expenseCategories: ExpenseCategory[]) => void;
   selectedCategory?: ExpenseCategory;
-  setSelectedCategory: (paymentMethod: ExpenseCategory) => void;
+  setSelectedCategory: (selectedCategory: ExpenseCategory) => void;
 }
 
 export const useExpenseCategoriesStore = create<ExpenseCategoriesStore>(
