@@ -4,7 +4,7 @@ import { migrateExpenseCategoriesTable } from "./tables/expenseCategories/expens
 import { migratePaymentMethodsTable } from "./tables/paymentMethods/paymentMethods.migrations";
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
-  const DATABASE_VERSION = 1;
+  const DATABASE_VERSION = 2;
   const { user_version: currentDbVersion } = await db.getFirstAsync<{
     user_version: number;
   }>("PRAGMA user_version");
@@ -14,10 +14,16 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   }
 
   if (currentDbVersion === 0) {
-    // Initial migration for all tables
-    await migrateExpensesTable(db);
-    await migrateExpenseCategoriesTable(db);
-    await migratePaymentMethodsTable(db);
-    await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+    try {
+      // Initial migration for all tables
+      await migrateExpensesTable(db);
+      await migrateExpenseCategoriesTable(db);
+      await migratePaymentMethodsTable(db);
+
+      // Update database version
+      await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+    } catch (error) {
+      console.error("Error during database migration:", error);
+    }
   }
 }
