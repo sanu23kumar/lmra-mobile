@@ -18,6 +18,20 @@ export default function RootLayout() {
             title: "Expenses",
           }}
         />
+        <Stack.Screen
+          name="payment_methods"
+          options={{
+            presentation: "modal",
+            title: "Payment Methods",
+          }}
+        />
+        <Stack.Screen
+          name="expense_categories"
+          options={{
+            presentation: "modal",
+            title: "Expense Categories",
+          }}
+        />
       </Stack>
     </DatabaseProvider>
   );
