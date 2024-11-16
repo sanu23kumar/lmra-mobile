@@ -1,33 +1,66 @@
+import ScreenView from "@/components/ScreenView";
 import ThemedButton from "@/components/ThemedButton";
-import { ThemedText } from "@/components/ThemedText";
 import ThemedTextInput from "@/components/ThemedTextInput";
-import { ThemedView } from "@/components/ThemedView";
+import SelectorItem from "@/components/expenses/SelectorItem";
 import { usePaymentMethods } from "@/database/tables/paymentMethods/paymentMethods.hooks";
+import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 
 export default function PaymentMethods() {
-  const { paymentMethods, handleAddPaymentMethod } = usePaymentMethods();
+  const { back } = useRouter();
+
+  const {
+    paymentMethods,
+    handleAddPaymentMethod,
+    handleDeletePaymentMethod,
+    setSelectePaymentMethod,
+  } = usePaymentMethods();
   const [methodName, setMethodName] = useState("");
 
   const onAddMethod = () => handleAddPaymentMethod(methodName);
 
   return (
-    <ThemedView style={{ flex: 1 }}>
-      {paymentMethods.map((method) => (
-        <ThemedText>{method.method_name}</ThemedText>
-      ))}
-      <ThemedTextInput
-        placeholder="Method name"
-        value={methodName}
-        onChangeText={setMethodName}
-      />
-      <Pressable
-        onPress={onAddMethod}
-        disabled={methodName.trim().length === 0}
+    <ScreenView>
+      <View style={{ flex: 1 }}>
+        {paymentMethods.map((method) => {
+          const onDeleteCategory = () => handleDeletePaymentMethod(method.id);
+          const onSelecteCategory = () => {
+            setSelectePaymentMethod(method);
+            back();
+          };
+          return (
+            <SelectorItem
+              key={method.id}
+              name={method.method_name}
+              onPress={onSelecteCategory}
+              onLongPress={onDeleteCategory}
+            />
+          );
+        })}
+      </View>
+
+      <View
+        style={{
+          paddingHorizontal: 16,
+          justifyContent: "space-between",
+        }}
       >
-        <ThemedButton name="Add" />
-      </Pressable>
-    </ThemedView>
+        <View style={{ height: 50 }}>
+          <ThemedTextInput
+            placeholder="Method name"
+            value={methodName}
+            onChangeText={setMethodName}
+          />
+        </View>
+
+        <Pressable
+          onPress={onAddMethod}
+          disabled={methodName.trim().length === 0}
+        >
+          <ThemedButton name="Add Category" />
+        </Pressable>
+      </View>
+    </ScreenView>
   );
 }

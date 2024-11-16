@@ -8,7 +8,7 @@ import { formatDateTime } from "@/utils/formatDateTime";
 import DatePicker from "react-native-date-picker";
 import { usePaymentMethods } from "@/database/tables/paymentMethods/paymentMethods.hooks";
 import { useExpenseCategories } from "@/database/tables/expenseCategories/expenseCategories.hooks";
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function AddExpense() {
   const { navigate } = useRouter();

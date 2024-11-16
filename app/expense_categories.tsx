@@ -1,18 +1,14 @@
+import ScreenView from "@/components/ScreenView";
 import ThemedButton from "@/components/ThemedButton";
-import { ThemedText } from "@/components/ThemedText";
 import ThemedTextInput from "@/components/ThemedTextInput";
-import { ThemedView } from "@/components/ThemedView";
+import SelectorItem from "@/components/expenses/SelectorItem";
 import { useExpenseCategories } from "@/database/tables/expenseCategories/expenseCategories.hooks";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Pressable, View } from "react-native";
 
 export default function PaymentMethods() {
   const { back } = useRouter();
-  const { bottom } = useSafeAreaInsets();
-  const borderColor = useThemeColor({}, "textLight");
   const {
     expenseCategories,
     setSelectedCategory,
@@ -24,7 +20,7 @@ export default function PaymentMethods() {
   const onAddMethod = () => handleAddExpenseCategory(expenseCategory);
 
   return (
-    <ThemedView style={{ flex: 1, paddingBottom: bottom }}>
+    <ScreenView>
       <View style={{ flex: 1 }}>
         {expenseCategories.map((category) => {
           const onDeleteCategory = () =>
@@ -34,23 +30,12 @@ export default function PaymentMethods() {
             back();
           };
           return (
-            <Pressable
-              style={{
-                paddingHorizontal: 16,
-                paddingVertical: 12,
-                borderRadius: 12,
-                borderWidth: 0.5,
-                marginHorizontal: 16,
-                marginBottom: 16,
-                borderColor,
-              }}
+            <SelectorItem
+              key={category.id}
+              name={category.category_name}
               onPress={onSelecteCategory}
               onLongPress={onDeleteCategory}
-            >
-              <ThemedText type="defaultSemiBold" colorScheme="textLight">
-                {category.category_name}
-              </ThemedText>
-            </Pressable>
+            />
           );
         })}
       </View>
@@ -76,6 +61,6 @@ export default function PaymentMethods() {
           <ThemedButton name="Add Category" />
         </Pressable>
       </View>
-    </ThemedView>
+    </ScreenView>
   );
 }
