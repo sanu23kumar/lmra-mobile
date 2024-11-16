@@ -10,8 +10,12 @@ export function useExpenseCategories() {
     deleteExpenseCategory,
   } = useExpenseCategoriesQueries();
 
-  const { expenseCategories, setExpenseCategories } =
-    useExpenseCategoriesStore();
+  const {
+    expenseCategories,
+    setExpenseCategories,
+    selectedCategory,
+    setSelectedCategory,
+  } = useExpenseCategoriesStore();
 
   const fetchExpenseCategories = () =>
     getAllExpenseCategories().then((data) => setExpenseCategories(data));
@@ -31,6 +35,8 @@ export function useExpenseCategories() {
 
   return {
     expenseCategories,
+    selectedCategory: selectedCategory ?? expenseCategories[0],
+    setSelectedCategory,
     fetchExpenseCategories,
     handleAddExpenseCategory,
     handleUpdateExpenseCategory,

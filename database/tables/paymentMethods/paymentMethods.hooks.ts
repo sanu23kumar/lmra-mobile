@@ -10,7 +10,12 @@ export function usePaymentMethods() {
     deletePaymentMethod,
   } = usePaymentMethodsQueries();
 
-  const { paymentMethods, setPaymentMethods } = usePaymentMethodsStore();
+  const {
+    paymentMethods,
+    setPaymentMethods,
+    selectedMethod,
+    setSelectePaymentMethod,
+  } = usePaymentMethodsStore();
 
   const fetchPaymentMethods = () =>
     getAllPaymentMethods().then((data) => setPaymentMethods(data));
@@ -30,6 +35,8 @@ export function usePaymentMethods() {
 
   return {
     paymentMethods,
+    selectedMethod: selectedMethod ?? paymentMethods[0],
+    setSelectePaymentMethod,
     fetchPaymentMethods,
     handleAddPaymentMethod,
     handleUpdatePaymentMethod,
