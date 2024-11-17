@@ -5,9 +5,14 @@ import { useExpenses } from "@/database/tables/expenses/expenses.hooks";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { formatDateTime } from "@/utils/formatDateTime";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useExpenseCategories } from "@/database/tables/expenseCategories/expenseCategories.hooks";
 
 export default function UserExpense({ item }: { item: Expense }) {
   const { handleDeleteExpense } = useExpenses();
+  const { expenseCategories } = useExpenseCategories();
+  const itemExpenseCategoryName = expenseCategories.find(
+    (c) => c.id === item.expense_category_id
+  )?.category_name;
   const deleteExpense = () => {
     handleDeleteExpense(item.id);
   };
@@ -20,14 +25,21 @@ export default function UserExpense({ item }: { item: Expense }) {
       style={[styles.button, themedButton]}
     >
       <View>
-        <ThemedText type="sm" colorScheme="textLight">
-          {formatDateTime(item.date_of_expense)} {item.expense_category_id}
-        </ThemedText>
+        <View style={{ flexDirection: "row" }}>
+          <ThemedText type="sm" colorScheme="textLight">
+            {formatDateTime(item.date_of_expense)}
+          </ThemedText>
+        </View>
         <ThemedText>{item.name}</ThemedText>
       </View>
-      <ThemedText type="subtitle" colorScheme="primary">
-        {formatCurrency(item.amount)}
-      </ThemedText>
+      <View style={{ alignItems: "flex-end" }}>
+        <ThemedText type="sm" colorScheme="primary">
+          {itemExpenseCategoryName}
+        </ThemedText>
+        <ThemedText type="subtitle" colorScheme="primary">
+          {formatCurrency(item.amount)}
+        </ThemedText>
+      </View>
     </Pressable>
   );
 }
