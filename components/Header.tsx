@@ -12,7 +12,7 @@ export default function Header(props: any) {
         paddingTop: top,
         flexDirection: "row",
         gap: 12,
-        height: 120,
+        height: 100,
       }}
     >
       <ThemedText
