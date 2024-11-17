@@ -1,17 +1,24 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View, ViewStyle } from "react-native";
 import { ThemedText } from "../ThemedText";
 import { Expense } from "@/database/tables/expenses/expenses.types";
 import { useExpenses } from "@/database/tables/expenses/expenses.hooks";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { formatDateTime } from "@/utils/formatDateTime";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function UserExpense({ item }: { item: Expense }) {
   const { handleDeleteExpense } = useExpenses();
   const deleteExpense = () => {
     handleDeleteExpense(item.id);
   };
+  const borderColor = useThemeColor({}, "border");
+  const backgroundColor = useThemeColor({}, "card");
+  const themedButton: ViewStyle = { borderColor, backgroundColor };
   return (
-    <Pressable onLongPress={deleteExpense} style={styles.button}>
+    <Pressable
+      onLongPress={deleteExpense}
+      style={[styles.button, themedButton]}
+    >
       <View>
         <ThemedText type="sm" colorScheme="textLight">
           {formatDateTime(item.date_of_expense)} {item.expense_category_id}

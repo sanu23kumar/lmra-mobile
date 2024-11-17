@@ -1,9 +1,10 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View, ViewStyle } from "react-native";
 import { ThemedView } from "../ThemedView";
 import { ThemedText } from "../ThemedText";
 import FinanceCategories from "./FinanceCategories";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { ExpenseCategoryTotals } from "@/database/tables/expenseCategories/expenseCategories.types";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function FinanceSection({
   title,
@@ -16,9 +17,12 @@ export default function FinanceSection({
   categories: ExpenseCategoryTotals[];
   onPress: () => void;
 }) {
+  const borderColor = useThemeColor({}, "border");
+  const cardColor = useThemeColor({}, "card");
+  const cardStyle: ViewStyle = { borderColor, backgroundColor: cardColor };
   return (
     <Pressable onPress={onPress} key={title}>
-      <ThemedView style={styles.section}>
+      <ThemedView style={[styles.section, cardStyle]}>
         <ThemedText type="defaultSemiBold" colorScheme="primary">
           {title}
         </ThemedText>
@@ -34,8 +38,8 @@ export default function FinanceSection({
 const styles = StyleSheet.create({
   section: {
     borderRadius: 8,
-    padding: 16,
-    borderColor: "lightgrey",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     borderWidth: 1,
   },
   details: {

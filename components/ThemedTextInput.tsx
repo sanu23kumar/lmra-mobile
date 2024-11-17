@@ -8,9 +8,14 @@ export default function ThemedTextInput({
   ...otherProps
 }: ThemedTextInputProps) {
   const placeholderTextColor = useThemeColor({}, "placeholder");
+  const textColor = useThemeColor({}, "text");
   return (
-    <ThemedView colorScheme="primaryLight" style={styles.inputWrapper}>
-      <TextInput placeholderTextColor={placeholderTextColor} {...otherProps} />
+    <ThemedView colorScheme="card" style={styles.inputWrapper}>
+      <TextInput
+        placeholderTextColor={placeholderTextColor}
+        style={{ color: textColor }}
+        {...otherProps}
+      />
     </ThemedView>
   );
 }

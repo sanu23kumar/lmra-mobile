@@ -11,28 +11,13 @@ export default function FinanceCategories({
 }) {
   return (
     <View>
-      {categories.map((category) => (
-        <View style={styles.category}>
-          <ThemedText
-            type="sm"
-            style={{ width: 60 }}
-            key={category.category_id + category.category_name}
-          >
+      {categories.map((category, index) => (
+        <View style={styles.category} key={index}>
+          <ThemedText type="sm" style={{ width: 60 }}>
             {category.category_name}
           </ThemedText>
-
-          <ThemedText
-            type="sm"
-            key={category.category_id + category.category_name}
-          >
-            {category.total}
-          </ThemedText>
-
-          <ThemedText
-            type="sm"
-            colorScheme="textLight"
-            key={category.category_id + category.category_name}
-          >
+          <ThemedText type="sm">{category.total}</ThemedText>
+          <ThemedText type="sm" colorScheme="textLight">
             {Number((category.total / total) * 100).toFixed(0)}%
           </ThemedText>
         </View>

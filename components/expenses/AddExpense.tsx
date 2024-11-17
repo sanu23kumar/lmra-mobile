@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     borderTopWidth: 0.5,
-    borderColor: "#eee",
   },
   inputRow: {
     flexDirection: "row",
