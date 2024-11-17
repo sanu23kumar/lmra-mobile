@@ -1,26 +1,42 @@
+import { useState, useRef } from "react";
+import { StyleSheet, View, TextInput, Pressable } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
-import { useExpenses } from "@/database/tables/expenses/expenses.hooks";
-import { useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
-import ThemedButton from "../ThemedButton";
+import { ExpenseInputRow } from "./ExpenseInputRow";
+import { DateSelector } from "./DateSelector";
+import { PaymentMethodSelector } from "./PaymentMethodSelector";
+import { CategorySelector } from "./CategorySelector";
+import { AddExpenseButton } from "./AddExpenseButton";
 import ThemedTextInput from "../ThemedTextInput";
-import { formatDateTime } from "@/utils/formatDateTime";
-import DatePicker from "react-native-date-picker";
-import { usePaymentMethods } from "@/database/tables/paymentMethods/paymentMethods.hooks";
+import Animated from "react-native-reanimated";
+import { useBottomSlideAnimation } from "./useBottomSlideAnimation";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { Ionicons } from "@expo/vector-icons";
+import { useExpenses } from "@/database/tables/expenses/expenses.hooks";
 import { useExpenseCategories } from "@/database/tables/expenseCategories/expenseCategories.hooks";
-import { useRouter } from "expo-router";
+import { usePaymentMethods } from "@/database/tables/paymentMethods/paymentMethods.hooks";
 
 export default function AddExpense() {
-  const { navigate } = useRouter();
+  const [formVisible, setFormVisible] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [name, setName] = useState("");
+  const [date, setDate] = useState(new Date());
+  const backgroundColor = useThemeColor({}, "background");
+  const primaryBackground = useThemeColor({}, "primary");
 
   const { handleAddExpense } = useExpenses();
-  const { selectedMethod } = usePaymentMethods();
   const { selectedCategory } = useExpenseCategories();
+  const { selectedMethod } = usePaymentMethods();
+  const { animatedStyle, show, hide } = useBottomSlideAnimation(50);
 
-  const [name, setName] = useState("");
-  const [amount, setAmount] = useState("");
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
+  const showForm = () => {
+    setFormVisible(true);
+    show();
+  };
+
+  const hideForm = () => {
+    hide();
+    setTimeout(() => setFormVisible(false), 300); // Hide the form after animation
+  };
 
   const placeholderName =
     amount.length > 0 ? "Expense of " + " " + amount : "Name";
@@ -30,7 +46,7 @@ export default function AddExpense() {
     await handleAddExpense(
       expenseName,
       Number(amount),
-      new Date(),
+      date,
       selectedMethod.id,
       selectedCategory.id
     );
@@ -40,60 +56,56 @@ export default function AddExpense() {
 
   return (
     <ThemedView style={styles.parent}>
-      <View style={styles.inputRow}>
-        <ThemedTextInput
-          placeholder={placeholderName}
-          value={name}
-          onChangeText={setName}
-        />
-      </View>
-      <View style={styles.inputRow}>
-        <ThemedTextInput
-          placeholder="Amount"
-          value={amount}
-          keyboardType="numeric"
-          inputMode="numeric"
-          onChangeText={setAmount}
-        />
-        <ThemedTextInput
-          placeholder={formatDateTime(new Date())}
-          onPress={() => setOpen(true)}
-          value={formatDateTime(date)}
-          editable={false}
-        />
-      </View>
-      <View style={styles.inputRow}>
-        <ThemedTextInput
-          placeholder="Method"
-          onPress={() => navigate("/payment_methods")}
-          value={selectedMethod?.method_name}
-          editable={false}
-        />
-        <ThemedTextInput
-          placeholder="Category"
-          onPress={() => navigate("/expense_categories")}
-          value={selectedCategory?.category_name}
-          editable={false}
-        />
-      </View>
+      {formVisible && (
+        <Animated.View
+          style={[styles.formContainer, { backgroundColor }, animatedStyle]}
+        >
+          <ExpenseInputRow>
+            <ThemedTextInput
+              placeholder="Amount"
+              autoFocus
+              value={amount}
+              keyboardType="numeric"
+              inputMode="numeric"
+              onChangeText={setAmount}
+            />
+            <DateSelector date={date} setDate={setDate} />
+          </ExpenseInputRow>
 
-      <Pressable onPress={addExpense}>
-        <ThemedButton name="Add Expense" />
-      </Pressable>
-
-      <DatePicker
-        modal
-        open={open}
-        date={date}
-        mode="datetime" // Change to "date" if you only want to select a date
-        onConfirm={(date) => {
-          setOpen(false);
-          setDate(date); // Set the selected date
+          <ExpenseInputRow>
+            <PaymentMethodSelector methodName="Method Name" />
+            <CategorySelector categoryName="Category Name" />
+          </ExpenseInputRow>
+          <ExpenseInputRow>
+            <ThemedTextInput
+              placeholder="Name"
+              value={name}
+              onChangeText={setName}
+            />
+          </ExpenseInputRow>
+        </Animated.View>
+      )}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 12,
         }}
-        onCancel={() => {
-          setOpen(false);
-        }}
-      />
+      >
+        <AddExpenseButton onPress={formVisible ? addExpense : showForm} />
+        {formVisible ? (
+          <Pressable
+            onPress={hideForm}
+            style={{
+              padding: 12,
+              backgroundColor: primaryBackground,
+              borderRadius: 8,
+            }}
+          >
+            <Ionicons name="close" size={24} />
+          </Pressable>
+        ) : null}
+      </View>
     </ThemedView>
   );
 }
@@ -102,17 +114,22 @@ const styles = StyleSheet.create({
   parent: {
     paddingHorizontal: 16,
     paddingTop: 16,
-    borderTopWidth: 0.5,
   },
-  inputRow: {
-    flexDirection: "row",
-    alignContent: "stretch",
-    gap: 12,
+  formContainer: {
+    position: "absolute",
+    bottom: 64,
+    left: 0,
+    right: 0,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  dateButton: {
-    borderRadius: 8,
-    alignSelf: "stretch",
-    flexGrow: 1,
-    flex: 1,
+  actions: {
+    marginTop: 16,
   },
 });
