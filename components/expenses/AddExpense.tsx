@@ -73,8 +73,8 @@ export default function AddExpense() {
           </ExpenseInputRow>
 
           <ExpenseInputRow>
-            <PaymentMethodSelector methodName="Method Name" />
-            <CategorySelector categoryName="Category Name" />
+            <PaymentMethodSelector/>
+            <CategorySelector />
           </ExpenseInputRow>
           <ExpenseInputRow>
             <ThemedTextInput

@@ -11,6 +11,7 @@ export default function PaymentMethods() {
   const { back } = useRouter();
   const {
     expenseCategories,
+    selectedCategory,
     setSelectedCategory,
     handleAddExpenseCategory,
     handleDeleteExpenseCategory,
@@ -35,6 +36,7 @@ export default function PaymentMethods() {
             <SelectorItem
               key={category.id}
               name={category.category_name}
+              selected={category.id === selectedCategory.id}
               onPress={onSelecteCategory}
               onLongPress={onDeleteCategory}
             />

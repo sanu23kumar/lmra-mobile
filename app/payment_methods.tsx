@@ -14,6 +14,7 @@ export default function PaymentMethods() {
     paymentMethods,
     handleAddPaymentMethod,
     handleDeletePaymentMethod,
+    selectedMethod,
     setSelectePaymentMethod,
   } = usePaymentMethods();
   const [methodName, setMethodName] = useState("");
@@ -33,6 +34,7 @@ export default function PaymentMethods() {
             <SelectorItem
               key={method.id}
               name={method.method_name}
+              selected={method.id === selectedMethod.id}
               onPress={onSelecteCategory}
               onLongPress={onDeleteCategory}
             />

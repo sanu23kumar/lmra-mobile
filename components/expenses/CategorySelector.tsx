@@ -1,14 +1,16 @@
+import { useExpenseCategories } from "@/database/tables/expenseCategories/expenseCategories.hooks";
 import ThemedTextInput from "../ThemedTextInput";
 import { useRouter } from "expo-router";
 
-export function CategorySelector({ categoryName }: { categoryName: string }) {
+export function CategorySelector() {
   const { navigate } = useRouter();
+  const { selectedCategory } = useExpenseCategories();
 
   return (
     <ThemedTextInput
       placeholder="Category"
       onPress={() => navigate("/expense_categories")}
-      value={categoryName}
+      value={selectedCategory.category_name}
       editable={false}
     />
   );
