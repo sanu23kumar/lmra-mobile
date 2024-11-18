@@ -7,7 +7,7 @@ import { PaymentMethodSelector } from "./PaymentMethodSelector";
 import { CategorySelector } from "./CategorySelector";
 import { AddExpenseButton } from "./AddExpenseButton";
 import ThemedTextInput from "../ThemedTextInput";
-import Animated from "react-native-reanimated";
+import Animated, { LinearTransition } from "react-native-reanimated";
 import { useBottomSlideAnimation } from "./useBottomSlideAnimation";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
@@ -35,7 +35,7 @@ export default function AddExpense() {
 
   const hideForm = () => {
     hide();
-    setTimeout(() => setFormVisible(false), 300); // Hide the form after animation
+    setFormVisible(false);
   };
 
   const placeholderName =
@@ -58,6 +58,7 @@ export default function AddExpense() {
     <ThemedView style={styles.parent}>
       {formVisible && (
         <Animated.View
+          layout={LinearTransition}
           style={[styles.formContainer, { backgroundColor }, animatedStyle]}
         >
           <ExpenseInputRow>
@@ -73,7 +74,7 @@ export default function AddExpense() {
           </ExpenseInputRow>
 
           <ExpenseInputRow>
-            <PaymentMethodSelector/>
+            <PaymentMethodSelector />
             <CategorySelector />
           </ExpenseInputRow>
           <ExpenseInputRow>
@@ -89,22 +90,30 @@ export default function AddExpense() {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          gap: 12,
         }}
       >
-        <AddExpenseButton onPress={formVisible ? addExpense : showForm} />
-        {formVisible ? (
+        <Animated.View style={{ flex: 1 }} layout={LinearTransition}>
+          <AddExpenseButton onPress={formVisible ? addExpense : showForm} />
+        </Animated.View>
+        <Animated.View layout={LinearTransition}>
           <Pressable
-            onPress={hideForm}
+            onPress={formVisible ? hideForm : showForm}
             style={{
               padding: 12,
               backgroundColor: primaryBackground,
-              borderRadius: 8,
+              position: "absolute",
+              right: 0,
+              bottom: -24,
+              borderTopRightRadius: 8,
+              borderBottomRightRadius: 8,
             }}
           >
-            <Ionicons name="close" size={24} />
+            <Ionicons
+              name={formVisible ? "chevron-down" : "chevron-up"}
+              size={24}
+            />
           </Pressable>
-        ) : null}
+        </Animated.View>
       </View>
     </ThemedView>
   );
