@@ -13,7 +13,7 @@ export default function FinanceCategories({
     <View>
       {categories.map((category, index) => (
         <View style={styles.category} key={index}>
-          <ThemedText type="sm" style={{ width: 60 }}>
+          <ThemedText type="sm" style={{ width: 60 }} numberOfLines={1}>
             {category.category_name}
           </ThemedText>
           <ThemedText type="sm">{category.total}</ThemedText>
